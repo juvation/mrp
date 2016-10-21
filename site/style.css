@@ -1,0 +1,45 @@
+body 
+{
+  background-color: #bbbbbb;
+  color: black;
+  font-family: helvetica, helvetica, sans-serif;
+  font-size: 12px;
+  margin: 0px;
+}
+
+
+a:link, a:visited
+{
+  text-decoration: none;
+  color: #007DC0;
+}
+
+
+a:hover, a:active
+{
+  color: #FF0000;
+  text-decoration: underline;
+}
+
+
+td 
+{ 
+  font-size: 12px; 
+}
+
+
+.highlight
+{
+  font-size: 15px;
+}
+
+
+
+.main-box 
+{
+  border: 1px solid red;
+  margin: 20px 20px 20px 20px;
+  padding: 20px;
+  width: 80%;
+}
+

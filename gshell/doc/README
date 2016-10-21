@@ -1,0 +1,29 @@
+
+
+MRP Sequencer  -  EXPERIMENTAL RELEASE
+======================================
+
+
+* a simple example:
+
+mrp> selecttrack 0
+selected track 0
+mrp> randomnote
+randomised note on 16 selections
+base note 0 range 128 note
+mrp> play
+mrp> bpm 500
+
+
+* run 'help' to see a list of commands
+
+
+* key controls for modifying the current selection:
+
+  note -- q w  e r -- velocity
+  port -- a s  d f -- gate
+  chan -- z x
+
+
+
+

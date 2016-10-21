@@ -1,0 +1,7 @@
+
+pending version 
+	+ fixed open behavior: open from window with unmodified open file
+	  opens new window
+
+version 1.0.0 (2005-01-05)
+	+ first release

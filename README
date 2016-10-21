@@ -1,0 +1,25 @@
+
+
+Building MRP Sequencer and MRPShell
+-----------------------------------
+
+You will need Qt installed (www.trolltech.com) in order to
+build MRP Sequencer.  If you do not have Qt installed, you
+can still build MRPShell.  
+
+
+
+To build everything and run MRP Sequencer:
+
+  make && cd gshell && make test
+
+
+To build and run just MRPShell:
+
+  cd midicl && make && cd ../seq && make && cd ../shell && make && bin/MRPShell
+
+
+
+(Note: If you are going to be building the binary
+distribution, build only the static version of the Qt
+library.)

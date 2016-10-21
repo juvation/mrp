@@ -1,0 +1,1 @@
+file bin/MRP\ Sequencer.app/Contents/MacOS/MRPSequencer

@@ -1,0 +1,38 @@
+
+
+MRP Sequencer  -  1.0.0
+======================================
+
+
+* a simple example:
+
+1 mrp> ports
+output port 0 is SimpleSynth virtual input
+2 mrp> newtrack
+added track 1
+3 mrp> selecttrack 1
+selected track 1
+4 mrp> randomnote
+randomised note on 16 selections
+base note C-1 range 127 note
+5 mrp> play
+
+
+* run 'ports' to see a list available MIDI output ports
+
+
+* run 'help' to see a list of commands
+
+
+* key controls for modifying the current selection when
+  key focus is in the track display:
+
+  note -- q w  e r -- velocity
+  port -- a s  d f -- gate
+  chan -- z x
+
+  NOTE: don't get too attached to these keybindings; they
+  are experimental and are going to be replaced with
+  something much better soon.
+
+

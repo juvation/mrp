@@ -46,7 +46,7 @@ MIDICLChannelisingListener::Hear (const MIDIPacketList *inPacketList)
 				// status byte
 				// does the channel match?
 				if (mFromChannel == 0
-					|| inputPacket->data [i] & 0xf == mFromChannel)
+					|| (inputPacket->data [i] & 0xf) == mFromChannel)
 				{
 					outputPacketBuffer [i]
 						= (inputPacket->data [i] & 0xf0) | mToChannel;

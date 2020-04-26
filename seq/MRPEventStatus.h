@@ -12,7 +12,7 @@ using namespace std;
 // FORWARD DECLARATIONS
 
 class MRPSequencer;
-class MRPSequencerSMF;
+// class MRPSequencerSMF;
 class MRPTrack;
 
 // MRPEventStatus
@@ -21,7 +21,7 @@ class MRPEventStatus
 {
 	// friends
 	friend class MRPSequencer;
-	friend class MRPSequencerSMF;
+	// friend class MRPSequencerSMF;
 	friend class MRPTrack;
 
 	// public constructor

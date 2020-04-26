@@ -22,7 +22,7 @@
 #include "MRPSelectionAction.h"
 #include "MRPSelectionFitToKey.h"
 #include "MRPSequencer.h"
-#include "MRPSequencerSMF.h"
+// #include "MRPSequencerSMF.h"
 #include "MRPStdioInterface.h"
 #include "MRPTrack.h"
 
@@ -44,13 +44,13 @@ MRPShell::Command MRPShell::sCommands [] =
 	{"deletetrack", "delt", "delete track", MRPShell::DeleteTrack},
 	{"ls", "dir", "directory listing", MRPShell::DirectoryListing},
 	{"display", "di", "display sequence", MRPShell::Display},
-	{"exportsmf", "", "export (smf file)", MRPShell::ExportSMF},
+//	{"exportsmf", "", "export (smf file)", MRPShell::ExportSMF},
 	{"fitkey", "", "fit to key (key)", MRPShell::FitToKey},
 	{"help", "", "display this message", MRPShell::Help},
 	{"history", "", "display command history", MRPShell::History},
 	{"hsolo", "hs", "horizontal solo", MRPShell::HSolo},
 	{"hunsolo", "hu", "horizontal unsolo", MRPShell::HUnSolo},
-	{"importsmf", "", "import (smf file)", MRPShell::ImportSMF},
+//	{"importsmf", "", "import (smf file)", MRPShell::ImportSMF},
 	{"internalsync", "", "internal sync", MRPShell::InternalSync},
 	{"invertmute", "im", "invert mute", MRPShell::InvertMute},
 	{"invertselection", "is", "invert selection", MRPShell::InvertSelection},
@@ -1326,9 +1326,9 @@ MRPShell::ExportSMF (MRPShell *inShell)
 		return 0;
 	}
 
-	MRPSequencerSMF	smf (inShell->mSequencer, inShell->mInterface);
+	// MRPSequencerSMF	smf (inShell->mSequencer, inShell->mInterface);
 
-	smf.Export (inShell->mParameters [1].c_str ());
+	// smf.Export (inShell->mParameters [1].c_str ());
 
 	return 0;
 }
@@ -1456,9 +1456,9 @@ MRPShell::ImportSMF (MRPShell *inShell)
 		return 0;
 	}
 
-	MRPSequencerSMF	smf (inShell->mSequencer, inShell->mInterface);
+	// MRPSequencerSMF	smf (inShell->mSequencer, inShell->mInterface);
 
-	smf.Import (inShell->mParameters [1].c_str ());
+	// smf.Import (inShell->mParameters [1].c_str ());
 
 	return 0;
 }
@@ -1783,44 +1783,74 @@ MRPShell::Ports (MRPShell *inShell)
 
 	for (int i = 0; i < numPorts; i++)
 	{
+		char	displayName [64];
 		char	name [64];
 		char	manufacturer [64];
 		char	model [64];
 
+    displayName [0] = 0;
 		name [0] = 0;
 		manufacturer [0] = 0;
-		name [0] = 0;
+		model [0] = 0;
 
-		CFStringRef	propertyName;
-		CFStringRef	propertyManufacturer;
-		CFStringRef	propertyModel;
+		CFStringRef	property = NULL;
 
 		if (MIDIObjectGetStringProperty
-			(MIDIGetSource (i), kMIDIPropertyName, &propertyName) == 0)
+			(MIDIGetSource (i), kMIDIPropertyName, &property) == 0)
 		{
-			CFStringGetCString (propertyName, name, sizeof (name), 0);
-			CFRelease (propertyName);
+			CFStringGetCString (property, name, sizeof (name), 0);
+			CFRelease (property);
+			property = NULL;
 		}
 
 		if (MIDIObjectGetStringProperty
-			(MIDIGetSource (i), kMIDIPropertyManufacturer, &propertyManufacturer) == 0)
+			(MIDIGetSource (i), kMIDIPropertyDisplayName, &property) == 0)
+		{
+			CFStringGetCString (property, displayName, sizeof (displayName), 0);
+			CFRelease (property);
+			property = NULL;
+		}
+
+		if (MIDIObjectGetStringProperty
+			(MIDIGetSource (i), kMIDIPropertyManufacturer, &property) == 0)
 		{
 			CFStringGetCString
-				(propertyManufacturer, manufacturer, sizeof (manufacturer), 0);
-			CFRelease (propertyManufacturer);
+				(property, manufacturer, sizeof (manufacturer), 0);
+			CFRelease (property);
+			property = NULL;
 		}
 
 		if (MIDIObjectGetStringProperty
-			(MIDIGetSource (i), kMIDIPropertyModel, &propertyModel) == 0)
+			(MIDIGetSource (i), kMIDIPropertyModel, &property) == 0)
 		{
-			CFStringGetCString (propertyModel, model, sizeof (model), 0);
-			CFRelease (propertyModel);
+			CFStringGetCString (property, model, sizeof (model), 0);
+			CFRelease (property);
+			property = NULL;
 		}
 
 		inShell->mInterface->WriteFormattedD ("%d ", i);
-		inShell->mInterface->WriteFormattedS ("(%s) : ", name);
-		inShell->mInterface->WriteFormattedS ("%s ", manufacturer);
-		inShell->mInterface->WriteFormattedS ("%s\n", model);
+
+		if (strlen(displayName) > 0)
+		{
+      inShell->mInterface->WriteFormattedS ("dn=%s ", displayName);
+    }
+
+		if (strlen(name) > 0)
+		{
+      inShell->mInterface->WriteFormattedS ("n=%s ", name);
+    }
+
+		if (strlen(manufacturer) > 0)
+		{
+      inShell->mInterface->WriteFormattedS ("mfr=%s ", manufacturer);
+    }
+
+		if (strlen(model) > 0)
+		{
+      inShell->mInterface->WriteFormattedS ("model=%s", model);
+    }
+
+    inShell->mInterface->WriteFormattedS ("\n", model);
 	}
 
 	numPorts = inShell->mSequencer->GetOutputPortCount ();
@@ -1829,44 +1859,69 @@ MRPShell::Ports (MRPShell *inShell)
 
 	for (int i = 0; i < numPorts; i++)
 	{
+		char	displayName [64];
 		char	name [64];
 		char	manufacturer [64];
 		char	model [64];
 
+    displayName [0] = 0;
 		name [0] = 0;
 		manufacturer [0] = 0;
-		name [0] = 0;
+		model [0] = 0;
 
-		CFStringRef	propertyName;
-		CFStringRef	propertyManufacturer;
-		CFStringRef	propertyModel;
+		CFStringRef	property = NULL;
 
 		if (MIDIObjectGetStringProperty
-			(MIDIGetSource (i), kMIDIPropertyName, &propertyName) == 0)
+			(MIDIGetDestination (i), kMIDIPropertyDisplayName, &property) == 0)
 		{
-			CFStringGetCString (propertyName, name, sizeof (name), 0);
-			CFRelease (propertyName);
+			CFStringGetCString (property, displayName, sizeof (displayName), 0);
+			CFRelease (property);
 		}
 
 		if (MIDIObjectGetStringProperty
-			(MIDIGetSource (i), kMIDIPropertyManufacturer, &propertyManufacturer) == 0)
+			(MIDIGetDestination (i), kMIDIPropertyName, &property) == 0)
 		{
-			CFStringGetCString
-				(propertyManufacturer, manufacturer, sizeof (manufacturer), 0);
-			CFRelease (propertyManufacturer);
+			CFStringGetCString (property, name, sizeof (name), 0);
+			CFRelease (property);
 		}
 
 		if (MIDIObjectGetStringProperty
-			(MIDIGetSource (i), kMIDIPropertyModel, &propertyModel) == 0)
+			(MIDIGetDestination (i), kMIDIPropertyManufacturer, &property) == 0)
 		{
-			CFStringGetCString (propertyModel, model, sizeof (model), 0);
-			CFRelease (propertyModel);
+			CFStringGetCString (property, manufacturer, sizeof (manufacturer), 0);
+			CFRelease (property);
+		}
+
+		if (MIDIObjectGetStringProperty
+			(MIDIGetDestination (i), kMIDIPropertyModel, &property) == 0)
+		{
+			CFStringGetCString (property, model, sizeof (model), 0);
+			CFRelease (property);
 		}
 
 		inShell->mInterface->WriteFormattedD ("%d ", i);
-		inShell->mInterface->WriteFormattedS ("(%s) : ", name);
-		inShell->mInterface->WriteFormattedS ("%s ", manufacturer);
-		inShell->mInterface->WriteFormattedS ("%s\n", model);
+		
+		if (strlen(displayName) > 0)
+		{
+      inShell->mInterface->WriteFormattedS ("dn=%s ", displayName);
+    }
+
+		if (strlen(name) > 0)
+		{
+      inShell->mInterface->WriteFormattedS ("n=%s ", name);
+    }
+
+		if (strlen(manufacturer) > 0)
+		{
+      inShell->mInterface->WriteFormattedS ("mfr=%s ", manufacturer);
+    }
+
+		if (strlen(model) > 0)
+		{
+      inShell->mInterface->WriteFormattedS ("model=%s", model);
+    }
+
+    inShell->mInterface->WriteFormattedS ("\n", model);
 	}
 
 	return 0;

@@ -20,7 +20,7 @@ class MRPEvent
 {
 	// friends
 	friend class MRPSequencer;
-	friend class MRPSequencerSMF;
+	// friend class MRPSequencerSMF;
 	friend class MRPTrack;
 
 	// static methods

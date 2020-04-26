@@ -22,7 +22,6 @@ SOURCES = \
 	MRPSequencer.cpp \
 	MRPSequencerClock.cpp \
 	MRPSequencerListener.cpp \
-	MRPSequencerSMF.cpp \
 	MRPTimeManagerClock.cpp \
 	MRPTrack.cpp
 
@@ -34,7 +33,6 @@ HEADERS =  \
 	MRPSelectionFitToKey.h \
 	MRPSequencer.h \
 	MRPSequencerClock.h \
-	MRPSequencerSMF.h \
 	MRPTimeManagerClock.h \
 	MRPTrack.h
 
